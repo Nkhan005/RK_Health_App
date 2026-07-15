@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RK Health - Medical OS Dark</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div id="lock-screen" class="lock-screen">
+        <div class="lock-box">
+            <div class="status-badge">🟢 SYSTEM SECURE</div>
+            <h2>🏥 RK Health Portal</h2>
+            <p id="lock-message">Enter your 4-digit security PIN to access records.</p>
+            <input type="password" id="pin-input" maxlength="4" placeholder="••••" aria-label="Security PIN Input" title="4-Digit Security PIN">
+            <button onclick="handlePinSubmit()" class="btn-primary" type="button" id="pin-btn">Unlock Dashboard</button>
+            <p class="hint" id="pin-hint">Default Demo PIN: <strong>1234</strong> (You can change this in settings!)</p>
+        </div>
+    </div>
+
+    <div id="app-wrapper" class="app-wrapper hidden">
+        
+        <nav class="sidebar" aria-label="Main Navigation">
+            <div class="logo">
+                <span class="pulse-dot"></span>
+                RK HEALTH OS
+            </div>
+            <ul class="nav-links">
+                <li class="active" onclick="switchTab('appointments-sec', this)" tabindex="0" title="Appointments Tab">📅 Appointments</li>
+                <li onclick="switchTab('medications-sec', this)" tabindex="0" title="Medications Tab">💊 Medications</li>
+                <li onclick="switchTab('summaries-sec', this)" tabindex="0" title="AI Summaries Tab">🧠 AI Summaries</li>
+                <li onclick="switchTab('report-sec', this)" tabindex="0" title="Health Report Tab">📄 Health Report</li>
+                <li onclick="switchTab('settings-sec', this)" tabindex="0" title="Security Settings Tab" class="nav-security">🛡️ Security PIN</li>
+            </ul>
+            <button onclick="lockApp()" class="btn-lock" title="Lock Dashboard" type="button">🔒 Lock System</button>
+        </nav>
+
+        <main class="main-content">
+            
+            <section id="appointments-sec" class="tab-content active" aria-labelledby="apt-header">
+                <div class="header-bar">
+                    <div>
+                        <h1 id="apt-header">Patient Appointments</h1>
+                        <p class="sub-text">Manage clinical schedules and automated Google Calendar links.</p>
+                    </div>
+                    <button onclick="openModal('apt-modal')" class="btn-primary" title="Create New Appointment" type="button">+ New Appointment</button>
+                </div>
+                <div id="appointments-list" class="cards-grid">
+                    <p class="empty-state">No clinical appointments logged. Create one to generate synced calendar links.</p>
+                </div>
+            </section>
+
+            <section id="medications-sec" class="tab-content hidden" aria-labelledby="med-header">
+                <div class="header-bar">
+                    <div>
+                        <h1 id="med-header">Medication Reminders</h1>
+                        <p class="sub-text">Active prescriptions paired with Twilio SMS dispatch protocols.</p>
+                    </div>
+                    <button onclick="openModal('med-modal')" class="btn-primary" title="Add New Medication" type="button">+ Add Prescription</button>
+                </div>
+                <div id="medications-list" class="cards-grid">
+                    <p class="empty-state">No prescription monitoring active.</p>
+                </div>
+            </section>
+
+            <section id="summaries-sec" class="tab-content hidden" aria-labelledby="ai-header">
+                <div class="header-bar">
+                    <div>
+                        <h1 id="ai-header">AI Clinical Summaries</h1>
+                        <p class="sub-text">Automated structuring via Llama 3.3 / Grok neural architecture.</p>
+                    </div>
+                    <button onclick="openModal('ai-modal')" class="btn-primary" title="Generate New AI Summary" type="button">✨ Neural Summary</button>
+                </div>
+                <div id="summaries-list" class="cards-grid">
+                    <p class="empty-state">No clinical notes submitted for neural processing yet.</p>
+                </div>
+            </section>
+
+            <section id="report-sec" class="tab-content hidden" aria-labelledby="report-header">
+                <div class="header-bar">
+                    <div>
+                        <h1 id="report-header">Master Medical Record</h1>
+                        <p class="sub-text">Comprehensive exportable patient database log.</p>
+                    </div>
+                    <button onclick="window.print()" class="btn-secondary" title="Print or Export Report to PDF" type="button">🖨️ Export Clinical PDF</button>
+                </div>
+                <div class="report-container">
+                    <div class="report-header-box">
+                        <h2>CONFIDENTIAL PATIENT RECORD</h2>
+                        <p class="report-date">System Timestamp: <span id="current-date"></span></p>
+                    </div>
+                    <hr>
+                    <div id="report-content">
+                        <p class="loading-text">Synchronizing live records from Google Sheets cloud database...</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="settings-sec" class="tab-content hidden" aria-labelledby="settings-header">
+                <div class="header-bar">
+                    <div>
+                        <h1 id="settings-header">Security & PIN Configuration</h1>
+                        <p class="sub-text">Manage local access encryption and dashboard authentication.</p>
+                    </div>
+                </div>
+                <div class="settings-card">
+                    <h3>🔐 Update Access PIN</h3>
+                    <p>Set a custom 4-digit security code for unlocking this portal. This PIN is stored securely in your browser's local encryption storage.</p>
+                    <div class="pin-form">
+                        <input type="password" id="new-pin-input" maxlength="4" placeholder="New 4-Digit PIN" aria-label="New PIN Input">
+                        <button onclick="updateCustomPin()" class="btn-primary" type="button">Save New PIN</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="apt-modal" class="modal hidden" role="dialog" aria-labelledby="modal-apt-title">
+        <div class="modal-content">
+            <h3 id="modal-apt-title">Schedule Clinical Appointment</h3>
+            <input type="text" id="apt-patient" placeholder="Patient Name" required aria-label="Patient Name" title="Patient Name">
+            <input type="text" id="apt-doctor" placeholder="Attending Doctor" required aria-label="Doctor Name" title="Doctor Name">
+            <div class="row">
+                <input type="date" id="apt-date" required aria-label="Appointment Date" title="Select Appointment Date">
+                <input type="time" id="apt-time" required aria-label="Appointment Time" title="Select Appointment Time">
+            </div>
+            <input type="text" id="apt-title" placeholder="Diagnosis / Purpose of Visit" required aria-label="Visit Reason" title="Visit Reason">
+            <textarea id="apt-notes" placeholder="Clinical notes, allergies, or observations..." aria-label="Additional Notes" title="Additional Notes"></textarea>
+            <div class="modal-actions">
+                <button onclick="closeModal('apt-modal')" class="btn-cancel" type="button">Cancel</button>
+                <button onclick="submitAppointment()" class="btn-primary" type="button">Save & Sync Calendar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="med-modal" class="modal hidden" role="dialog" aria-labelledby="modal-med-title">
+        <div class="modal-content">
+            <h3 id="modal-med-title">Configure Prescription Alert</h3>
+            <input type="text" id="med-name" placeholder="Medication Name (e.g., Amoxicillin 500mg)" aria-label="Medicine Name" title="Medicine Name">
+            <input type="text" id="med-dosage" placeholder="Dosage Protocol (e.g., 1 Tablet Post-Meal)" aria-label="Dosage" title="Dosage Instructions">
+            <input type="text" id="med-timing" placeholder="Administration Timing (e.g., 08:00 & 20:00)" aria-label="Timing" title="Medication Timing">
+            <input type="tel" id="med-phone" placeholder="Twilio Target Phone (+1234567890)" aria-label="Phone Number" title="Phone Number for SMS Reminder">
+            <div class="modal-actions">
+                <button onclick="closeModal('med-modal')" class="btn-cancel" type="button">Cancel</button>
+                <button onclick="submitMedication()" class="btn-primary" type="button">Deploy SMS Protocol</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="ai-modal" class="modal hidden" role="dialog" aria-labelledby="modal-ai-title">
+        <div class="modal-content">
+            <h3 id="modal-ai-title">Neural Clinical Summarizer</h3>
+            <input type="text" id="ai-patient" placeholder="Patient Name" aria-label="Patient Name" title="Patient Name">
+            <textarea id="ai-raw-notes" rows="6" placeholder="Paste unformatted clinical transcript, laboratory results, or physician dictation here..." aria-label="Raw Doctor Notes" title="Raw Doctor Visit Notes"></textarea>
+            <div class="modal-actions">
+                <button onclick="closeModal('ai-modal')" class="btn-cancel" type="button">Cancel</button>
+                <button onclick="submitAISummary()" class="btn-primary" type="button">✨ Execute AI Structuring</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
