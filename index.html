@@ -1,168 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RK Health - Medical OS Dark</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>RK Health · Appointments &amp; Medication Reminders</title>
+  <meta name="description" content="RK Health keeps appointments, medicine reminders, AI visit summaries and a printable health report in one place.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://script.google.com https://script.googleusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="theme-color" content="#f5f2ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f1513" media="(prefers-color-scheme: dark)">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/views.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <script type="module" src="js/app.js"></script>
 </head>
-<body>
+<body class="is-locked">
+  <a class="skip-link" href="#view">Skip to content</a>
 
-    <div id="lock-screen" class="lock-screen">
-        <div class="lock-box">
-            <div class="status-badge">🟢 SYSTEM SECURE</div>
-            <h2>🏥 RK Health Portal</h2>
-            <p id="lock-message">Enter your 4-digit security PIN to access records.</p>
-            <input type="password" id="pin-input" maxlength="4" placeholder="••••" aria-label="Security PIN Input" title="4-Digit Security PIN">
-            <button onclick="handlePinSubmit()" class="btn-primary" type="button" id="pin-btn">Unlock Dashboard</button>
-            <p class="hint" id="pin-hint">Default Demo PIN: <strong>1234</strong> (You can change this in settings!)</p>
+  <!-- ============ Lock screen ============ -->
+  <section id="lock-screen" class="lock" aria-labelledby="lock-title">
+    <div class="lock-card">
+      <div class="brand brand-lg"><span class="brand-mark" aria-hidden="true"></span>RK Health</div>
+      <h1 id="lock-title" class="display">Welcome back</h1>
+      <p id="pin-msg" class="lock-msg" role="status" aria-live="polite">Enter your 4-digit PIN</p>
+      <div id="pin-dots" class="pin-dots" aria-hidden="true"></div>
+      <div class="keypad" role="group" aria-label="PIN keypad">
+        <button type="button" data-action="pin-key" data-value="1">1</button>
+        <button type="button" data-action="pin-key" data-value="2">2</button>
+        <button type="button" data-action="pin-key" data-value="3">3</button>
+        <button type="button" data-action="pin-key" data-value="4">4</button>
+        <button type="button" data-action="pin-key" data-value="5">5</button>
+        <button type="button" data-action="pin-key" data-value="6">6</button>
+        <button type="button" data-action="pin-key" data-value="7">7</button>
+        <button type="button" data-action="pin-key" data-value="8">8</button>
+        <button type="button" data-action="pin-key" data-value="9">9</button>
+        <span></span>
+        <button type="button" data-action="pin-key" data-value="0">0</button>
+        <button type="button" data-action="pin-back" class="key-muted" aria-label="Delete last digit">⌫</button>
+      </div>
+      <p id="pin-hint" class="lock-hint">Demo PIN is <strong>1234</strong>. Change it in Settings.</p>
+      <p class="lock-foot">You can also type your PIN on the keyboard.</p>
+    </div>
+  </section>
+
+  <!-- ============ App shell ============ -->
+  <div id="app" class="shell" hidden>
+    <nav class="sidebar" aria-label="Main">
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span>RK Health</div>
+      <ul class="nav">
+        <li><a href="#overview" data-route="overview"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Overview</span></a></li>
+        <li><a href="#appointments" data-route="appointments"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg><span>Visits</span></a></li>
+        <li><a href="#medications" data-route="medications"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg><span>Medicines</span></a></li>
+        <li><a href="#summaries" data-route="summaries"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg><span><span class="hide-mobile">AI </span>Summaries</span></a></li>
+        <li><a href="#report" data-route="report"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2.5H6.5a2 2 0 0 0-2 2v15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V8z"/><path d="M14 2.5V8h5.5M8.5 13h7M8.5 17h5"/></svg><span>Report</span></a></li>
+        <li><a href="#settings" data-route="settings"><svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v2.5M12 19v2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.5 12H5M19 12h2.5M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg><span>Settings</span></a></li>
+      </ul>
+      <div class="sidebar-foot">
+        <button type="button" class="btn btn-ghost btn-block" data-action="open-dialog" data-dialog="ai-dialog">
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>
+          Summarize a visit
+        </button>
+      </div>
+    </nav>
+
+    <div class="main-col">
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1 id="page-title">Overview</h1>
+          <p id="page-sub" class="page-sub" hidden></p>
         </div>
-    </div>
-
-    <div id="app-wrapper" class="app-wrapper hidden">
-        
-        <nav class="sidebar" aria-label="Main Navigation">
-            <div class="logo">
-                <span class="pulse-dot"></span>
-                RK HEALTH OS
-            </div>
-            <ul class="nav-links">
-                <li class="active" onclick="switchTab('appointments-sec', this)" tabindex="0" title="Appointments Tab">📅 Appointments</li>
-                <li onclick="switchTab('medications-sec', this)" tabindex="0" title="Medications Tab">💊 Medications</li>
-                <li onclick="switchTab('summaries-sec', this)" tabindex="0" title="AI Summaries Tab">🧠 AI Summaries</li>
-                <li onclick="switchTab('report-sec', this)" tabindex="0" title="Health Report Tab">📄 Health Report</li>
-                <li onclick="switchTab('settings-sec', this)" tabindex="0" title="Security Settings Tab" class="nav-security">🛡️ Security PIN</li>
-            </ul>
-            <button onclick="lockApp()" class="btn-lock" title="Lock Dashboard" type="button">🔒 Lock System</button>
-        </nav>
-
-        <main class="main-content">
-            
-            <section id="appointments-sec" class="tab-content active" aria-labelledby="apt-header">
-                <div class="header-bar">
-                    <div>
-                        <h1 id="apt-header">Patient Appointments</h1>
-                        <p class="sub-text">Manage clinical schedules and automated Google Calendar links.</p>
-                    </div>
-                    <button onclick="openModal('apt-modal')" class="btn-primary" title="Create New Appointment" type="button">+ New Appointment</button>
-                </div>
-                <div id="appointments-list" class="cards-grid">
-                    <p class="empty-state">No clinical appointments logged. Create one to generate synced calendar links.</p>
-                </div>
-            </section>
-
-            <section id="medications-sec" class="tab-content hidden" aria-labelledby="med-header">
-                <div class="header-bar">
-                    <div>
-                        <h1 id="med-header">Medication Reminders</h1>
-                        <p class="sub-text">Active prescriptions paired with Twilio SMS dispatch protocols.</p>
-                    </div>
-                    <button onclick="openModal('med-modal')" class="btn-primary" title="Add New Medication" type="button">+ Add Prescription</button>
-                </div>
-                <div id="medications-list" class="cards-grid">
-                    <p class="empty-state">No prescription monitoring active.</p>
-                </div>
-            </section>
-
-            <section id="summaries-sec" class="tab-content hidden" aria-labelledby="ai-header">
-                <div class="header-bar">
-                    <div>
-                        <h1 id="ai-header">AI Clinical Summaries</h1>
-                        <p class="sub-text">Automated structuring via Llama 3.3 / Grok neural architecture.</p>
-                    </div>
-                    <button onclick="openModal('ai-modal')" class="btn-primary" title="Generate New AI Summary" type="button">✨ Neural Summary</button>
-                </div>
-                <div id="summaries-list" class="cards-grid">
-                    <p class="empty-state">No clinical notes submitted for neural processing yet.</p>
-                </div>
-            </section>
-
-            <section id="report-sec" class="tab-content hidden" aria-labelledby="report-header">
-                <div class="header-bar">
-                    <div>
-                        <h1 id="report-header">Master Medical Record</h1>
-                        <p class="sub-text">Comprehensive exportable patient database log.</p>
-                    </div>
-                    <button onclick="window.print()" class="btn-secondary" title="Print or Export Report to PDF" type="button">🖨️ Export Clinical PDF</button>
-                </div>
-                <div class="report-container">
-                    <div class="report-header-box">
-                        <h2>CONFIDENTIAL PATIENT RECORD</h2>
-                        <p class="report-date">System Timestamp: <span id="current-date"></span></p>
-                    </div>
-                    <hr>
-                    <div id="report-content">
-                        <p class="loading-text">Synchronizing live records from Google Sheets cloud database...</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="settings-sec" class="tab-content hidden" aria-labelledby="settings-header">
-                <div class="header-bar">
-                    <div>
-                        <h1 id="settings-header">Security & PIN Configuration</h1>
-                        <p class="sub-text">Manage local access encryption and dashboard authentication.</p>
-                    </div>
-                </div>
-                <div class="settings-card">
-                    <h3>🔐 Update Access PIN</h3>
-                    <p>Set a custom 4-digit security code for unlocking this portal. This PIN is stored securely in your browser's local encryption storage.</p>
-                    <div class="pin-form">
-                        <input type="password" id="new-pin-input" maxlength="4" placeholder="New 4-Digit PIN" aria-label="New PIN Input">
-                        <button onclick="updateCustomPin()" class="btn-primary" type="button">Save New PIN</button>
-                    </div>
-                </div>
-            </section>
-
-        </main>
-    </div>
-
-    <div id="apt-modal" class="modal hidden" role="dialog" aria-labelledby="modal-apt-title">
-        <div class="modal-content">
-            <h3 id="modal-apt-title">Schedule Clinical Appointment</h3>
-            <input type="text" id="apt-patient" placeholder="Patient Name" required aria-label="Patient Name" title="Patient Name">
-            <input type="text" id="apt-doctor" placeholder="Attending Doctor" required aria-label="Doctor Name" title="Doctor Name">
-            <div class="row">
-                <input type="date" id="apt-date" required aria-label="Appointment Date" title="Select Appointment Date">
-                <input type="time" id="apt-time" required aria-label="Appointment Time" title="Select Appointment Time">
-            </div>
-            <input type="text" id="apt-title" placeholder="Diagnosis / Purpose of Visit" required aria-label="Visit Reason" title="Visit Reason">
-            <textarea id="apt-notes" placeholder="Clinical notes, allergies, or observations..." aria-label="Additional Notes" title="Additional Notes"></textarea>
-            <div class="modal-actions">
-                <button onclick="closeModal('apt-modal')" class="btn-cancel" type="button">Cancel</button>
-                <button onclick="submitAppointment()" class="btn-primary" type="button">Save & Sync Calendar</button>
-            </div>
+        <div class="topbar-actions">
+          <div id="sync-pill" aria-live="polite"></div>
+          <div id="page-cta" class="page-cta"></div>
+          <button type="button" id="theme-toggle" class="icon-btn" data-action="toggle-theme" aria-label="Toggle theme"></button>
+          <button type="button" class="icon-btn" data-action="lock" aria-label="Lock app">
+            <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10.5" width="16" height="11" rx="2.5"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
+          </button>
         </div>
+      </header>
+      <main id="view" class="view" tabindex="-1"></main>
     </div>
+  </div>
 
-    <div id="med-modal" class="modal hidden" role="dialog" aria-labelledby="modal-med-title">
-        <div class="modal-content">
-            <h3 id="modal-med-title">Configure Prescription Alert</h3>
-            <input type="text" id="med-name" placeholder="Medication Name (e.g., Amoxicillin 500mg)" aria-label="Medicine Name" title="Medicine Name">
-            <input type="text" id="med-dosage" placeholder="Dosage Protocol (e.g., 1 Tablet Post-Meal)" aria-label="Dosage" title="Dosage Instructions">
-            <input type="text" id="med-timing" placeholder="Administration Timing (e.g., 08:00 & 20:00)" aria-label="Timing" title="Medication Timing">
-            <input type="tel" id="med-phone" placeholder="Twilio Target Phone (+1234567890)" aria-label="Phone Number" title="Phone Number for SMS Reminder">
-            <div class="modal-actions">
-                <button onclick="closeModal('med-modal')" class="btn-cancel" type="button">Cancel</button>
-                <button onclick="submitMedication()" class="btn-primary" type="button">Deploy SMS Protocol</button>
-            </div>
+  <!-- ============ Dialogs (native <dialog>: focus trap, Esc to close, backdrop) ============ -->
+  <dialog id="apt-dialog" class="sheet" aria-labelledby="apt-title">
+    <form id="apt-form" method="dialog" novalidate>
+      <header class="sheet-head"><h2 id="apt-title">New appointment</h2><button class="icon-btn" value="cancel" aria-label="Close">✕</button></header>
+      <div class="sheet-body">
+        <div class="field-row">
+          <label class="field"><span>Patient name</span><input name="patientName" autocomplete="name" required autofocus><span class="field-error" data-for="patientName"></span></label>
+          <label class="field"><span>Doctor</span><input name="doctorName" placeholder="Dr. Ananya Rao" required><span class="field-error" data-for="doctorName"></span></label>
         </div>
-    </div>
-
-    <div id="ai-modal" class="modal hidden" role="dialog" aria-labelledby="modal-ai-title">
-        <div class="modal-content">
-            <h3 id="modal-ai-title">Neural Clinical Summarizer</h3>
-            <input type="text" id="ai-patient" placeholder="Patient Name" aria-label="Patient Name" title="Patient Name">
-            <textarea id="ai-raw-notes" rows="6" placeholder="Paste unformatted clinical transcript, laboratory results, or physician dictation here..." aria-label="Raw Doctor Notes" title="Raw Doctor Visit Notes"></textarea>
-            <div class="modal-actions">
-                <button onclick="closeModal('ai-modal')" class="btn-cancel" type="button">Cancel</button>
-                <button onclick="submitAISummary()" class="btn-primary" type="button">✨ Execute AI Structuring</button>
-            </div>
+        <div class="field-row">
+          <label class="field"><span>Date</span><input name="date" type="date" required><span class="field-error" data-for="date"></span></label>
+          <label class="field"><span>Time</span><input name="time" type="time" required><span class="field-error" data-for="time"></span></label>
         </div>
-    </div>
+        <label class="field"><span>Purpose of visit</span><input name="title" placeholder="e.g. Diabetes review" required><span class="field-error" data-for="title"></span></label>
+        <label class="field"><span>Notes <em>(optional)</em></span><textarea name="notes" rows="3" placeholder="Things to bring, symptoms, questions for the doctor…"></textarea></label>
+      </div>
+      <footer class="sheet-foot">
+        <button class="btn btn-ghost" value="cancel">Cancel</button>
+        <button class="btn btn-primary" type="submit" value="save">Save appointment</button>
+      </footer>
+    </form>
+  </dialog>
 
-    <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+  <dialog id="med-dialog" class="sheet" aria-labelledby="med-title">
+    <form id="med-form" method="dialog" novalidate>
+      <header class="sheet-head"><h2 id="med-title">Add medicine</h2><button class="icon-btn" value="cancel" aria-label="Close">✕</button></header>
+      <div class="sheet-body">
+        <label class="field"><span>Medicine</span><input name="medicineName" placeholder="e.g. Metformin 500mg" required autofocus><span class="field-error" data-for="medicineName"></span></label>
+        <label class="field"><span>Dosage</span><input name="dosage" placeholder="e.g. 1 tablet after meals" required><span class="field-error" data-for="dosage"></span></label>
+        <fieldset class="field">
+          <legend>Dose times</legend>
+          <div class="presets">
+            <button type="button" class="chip" data-action="preset-time" data-value="08:00" aria-pressed="false">Morning · 8:00</button>
+            <button type="button" class="chip" data-action="preset-time" data-value="14:00" aria-pressed="false">Afternoon · 14:00</button>
+            <button type="button" class="chip" data-action="preset-time" data-value="21:00" aria-pressed="false">Night · 21:00</button>
+          </div>
+          <div class="custom-time">
+            <input id="med-custom-time" type="time" aria-label="Custom dose time">
+            <button type="button" class="btn btn-ghost" data-action="add-med-time">Add time</button>
+          </div>
+          <div id="med-times" class="time-chips" aria-live="polite"></div>
+          <span class="field-error" data-for="times"></span>
+        </fieldset>
+        <label class="field"><span>Phone for SMS reminders <em>(optional)</em></span><input name="phoneNumber" type="tel" inputmode="tel" placeholder="+919876543210" autocomplete="tel">
+          <small class="hint">International format. Twilio sends a reminder at each dose time.</small><span class="field-error" data-for="phoneNumber"></span></label>
+      </div>
+      <footer class="sheet-foot">
+        <button class="btn btn-ghost" value="cancel">Cancel</button>
+        <button class="btn btn-primary" type="submit" value="save">Save medicine</button>
+      </footer>
+    </form>
+  </dialog>
 
-    <script src="app.js"></script>
+  <dialog id="ai-dialog" class="sheet" aria-labelledby="ai-title">
+    <form id="ai-form" method="dialog" novalidate>
+      <header class="sheet-head"><h2 id="ai-title">AI visit summary</h2><button class="icon-btn" value="cancel" aria-label="Close">✕</button></header>
+      <div class="sheet-body">
+        <p class="muted small">Paste the doctor's notes or prescription text. Llama 3.3 70B turns it into a short summary: overview, diagnosis, medicines and follow-up.</p>
+        <input type="hidden" name="appointmentId">
+        <label class="field"><span>Patient name</span><input name="patientName" autocomplete="name"></label>
+        <label class="field"><span>Doctor's notes</span><textarea name="rawNotes" rows="7" required placeholder="e.g. Pt c/o fatigue. FBS 148, HbA1c 7.6. Continue metformin 500 BD. Walk 30 min daily. Review in 4 weeks."></textarea><span class="field-error" data-for="rawNotes"></span></label>
+        <div class="ai-loading" aria-hidden="true"><span></span><span></span><span></span></div>
+      </div>
+      <footer class="sheet-foot">
+        <button class="btn btn-ghost" value="cancel">Cancel</button>
+        <button class="btn btn-primary" type="submit" value="save">Generate summary</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog id="confirm-dialog" class="sheet sheet-sm" aria-label="Confirm">
+    <form method="dialog">
+      <div class="sheet-body confirm-body"></div>
+      <footer class="sheet-foot">
+        <button class="btn btn-ghost" value="cancel">Cancel</button>
+        <button class="btn btn-primary" value="confirm" data-confirm>Confirm</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div id="toast-region" class="toast-region" aria-live="polite"></div>
 </body>
 </html>

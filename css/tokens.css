@@ -1,0 +1,113 @@
+/* Design tokens. Direction: "calm clinical editorial" — warm paper, deep teal, serif display.
+   Status colours are semantic only (taken / today / missed / AI) and always paired with text. */
+:root {
+  color-scheme: light;
+  --bg: #f5f2ea;
+  --bg-glow: radial-gradient(1200px 600px at 85% -10%, #e3efe9 0%, transparent 60%), radial-gradient(900px 500px at -10% 110%, #f1e6d6 0%, transparent 55%);
+  --surface: #fffdf8;
+  --surface-2: #efebe1;
+  --surface-3: #e7e2d5;
+  --ink: #13201c;
+  --ink-2: #4a5852;
+  --ink-3: #6f7a74;
+  --line: #e2ddd0;
+  --line-strong: #cfc8b8;
+
+  --accent: #0e6b5c;
+  --accent-strong: #0a5246;
+  --accent-ink: #ffffff;
+  --accent-soft: #dcefe9;
+
+  --good: #2f7d4f;      --good-soft: #dff0e4;
+  --today: #9a6412;     --today-soft: #fbefd5;
+  --missed: #b5482a;    --missed-soft: #f8e3d9;
+  --ai: #5546ad;        --ai-soft: #e8e5f7;
+  --danger: #b42318;    --danger-soft: #fde8e6;
+
+  --shadow-1: 0 1px 2px rgb(19 32 28 / 0.06), 0 1px 1px rgb(19 32 28 / 0.04);
+  --shadow-2: 0 10px 30px -12px rgb(19 32 28 / 0.18), 0 2px 6px rgb(19 32 28 / 0.05);
+  --shadow-3: 0 30px 80px -20px rgb(19 32 28 / 0.35);
+
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-ui: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.0625rem;
+  --text-xl: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  --text-display: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
+
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-xl: 26px;
+  --r-pill: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --sidebar-w: 244px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 140ms;
+  --dur: 260ms;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0f1513;
+    --bg-glow: radial-gradient(1100px 600px at 85% -10%, #143029 0%, transparent 60%), radial-gradient(900px 500px at -10% 110%, #1d1a14 0%, transparent 55%);
+    --surface: #161e1b;
+    --surface-2: #1d2724;
+    --surface-3: #25312d;
+    --ink: #e8eeea;
+    --ink-2: #a9b6b0;
+    --ink-3: #85928c;
+    --line: #26322e;
+    --line-strong: #34433e;
+    --accent: #3cc9a9;
+    --accent-strong: #6fdcc2;
+    --accent-ink: #062a23;
+    --accent-soft: #143a32;
+    --good: #5dcb8a;   --good-soft: #183323;
+    --today: #e8b65a;  --today-soft: #3a2e14;
+    --missed: #f08a63; --missed-soft: #3a2219;
+    --ai: #a99bff;     --ai-soft: #27234a;
+    --danger: #f97066; --danger-soft: #3d1b18;
+    --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-2: 0 12px 32px -14px rgb(0 0 0 / 0.7);
+    --shadow-3: 0 30px 80px -20px rgb(0 0 0 / 0.8);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0f1513;
+  --bg-glow: radial-gradient(1100px 600px at 85% -10%, #143029 0%, transparent 60%), radial-gradient(900px 500px at -10% 110%, #1d1a14 0%, transparent 55%);
+  --surface: #161e1b;
+  --surface-2: #1d2724;
+  --surface-3: #25312d;
+  --ink: #e8eeea;
+  --ink-2: #a9b6b0;
+  --ink-3: #85928c;
+  --line: #26322e;
+  --line-strong: #34433e;
+  --accent: #3cc9a9;
+  --accent-strong: #6fdcc2;
+  --accent-ink: #062a23;
+  --accent-soft: #143a32;
+  --good: #5dcb8a;   --good-soft: #183323;
+  --today: #e8b65a;  --today-soft: #3a2e14;
+  --missed: #f08a63; --missed-soft: #3a2219;
+  --ai: #a99bff;     --ai-soft: #27234a;
+  --danger: #f97066; --danger-soft: #3d1b18;
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-2: 0 12px 32px -14px rgb(0 0 0 / 0.7);
+  --shadow-3: 0 30px 80px -20px rgb(0 0 0 / 0.8);
+}

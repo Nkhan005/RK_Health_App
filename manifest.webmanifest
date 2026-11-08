@@ -1,0 +1,13 @@
+{
+  "name": "RK Health",
+  "short_name": "RK Health",
+  "description": "Appointments, medicine reminders, AI visit summaries and a printable health report.",
+  "start_url": "./#overview",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f2ea",
+  "theme_color": "#0e6b5c",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,14 @@
+/* Print: only the report document, on white paper, with no app chrome. */
+@page { margin: 16mm; }
+:root, :root[data-theme="dark"] {
+  --bg: #fff; --surface: #fff; --surface-2: #f3f3f0; --ink: #111; --ink-2: #333; --ink-3: #666;
+  --line: #ddd; --line-strong: #bbb; --accent: #0e6b5c; --accent-soft: #e2f1ec;
+}
+body { background: #fff !important; color: #111; }
+.sidebar, .topbar, .toolbar, .no-print, .toast-region, dialog, .skip-link, #lock-screen { display: none !important; }
+#app { display: block !important; }
+.shell { display: block; }
+.view { padding: 0; max-width: none; animation: none; }
+.report-doc { border: 0; box-shadow: none; padding: 0; }
+.report-sec, .report-sum, tr { break-inside: avoid; }
+.badge { border: 1px solid #ccc; background: none !important; color: #111 !important; }
